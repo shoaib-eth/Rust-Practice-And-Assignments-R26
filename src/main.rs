@@ -1,3 +1,4 @@
+mod pdf;
 use std::io;
 
 fn main() {
@@ -92,10 +93,26 @@ fn main() {
 
     if !backlogs.is_empty() {
         println!("\n⚠️ Backlogs in:");
-        for subject in backlogs {
+        for subject in &backlogs {
             println!("❌ {}", subject);
         }
     }
 
     println!("\n🙏 Best of luck for your future!");
+
+    //
+    println!("\n📥 Do you want to download report card as PDF? (y/n)");
+
+    let mut choice = String::new();
+    std::io::stdin().read_line(&mut choice).unwrap();
+
+    if choice.trim().eq_ignore_ascii_case("y") {
+        pdf::generate_report_card_pdf(
+            &subjects, &marks, percentage, sgpa, cgpa, division, status, &backlogs,
+        );
+
+        println!("✅ Report card saved as report_card.pdf 📄");
+    } else {
+        println!("👍 Okay! PDF not downloaded.");
+    }
 }
